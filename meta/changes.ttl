@@ -15,3 +15,15 @@ dist:v_0-001
 	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/UNIVERSAL-AUTHORITY-0.001.tar.gz> ;
 	rdfs:label      "'Twas his intent" .
 
+dist:project :release dist:v_0-002 .
+dist:v_0-002
+	a               :Version ;
+	dc:issued       "2011-11-06"^^xsd:date ;
+	:revision       "0.002"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/UNIVERSAL-AUTHORITY-0.002.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-001 ;
+		dcs:item   [ rdfs:label "Allow calling as an object method."@en ] ;
+		dcs:item   [ rdfs:label "Expose reaonably_smart_match utility function."@en ] ;
+		dcs:item   [ rdfs:label "Remove trailing full stops from croak messages."@en ]
+		] .

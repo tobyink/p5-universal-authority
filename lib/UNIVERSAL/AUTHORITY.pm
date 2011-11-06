@@ -5,7 +5,7 @@ use strict;
 
 BEGIN {
 	$UNIVERSAL::AUTHORITY::AUTHORITY = 'cpan:TOBYINK';
-	$UNIVERSAL::AUTHORITY::VERSION   = '0.001';
+	$UNIVERSAL::AUTHORITY::VERSION   = '0.002';
 }
 
 use Carp qw[croak];
@@ -14,7 +14,9 @@ use UNIVERSAL qw[];
 
 sub UNIVERSAL::AUTHORITY
 {
-	my ($invocant, $test) = @_;	
+	my ($invocant, $test) = @_;
+	$invocant = ref $invocant if blessed($invocant);
+	
 	my $authority = do {
 		no strict 'refs';
 		${"$invocant\::AUTHORITY"};
@@ -24,20 +26,20 @@ sub UNIVERSAL::AUTHORITY
 	{
 		if (defined $authority)
 		{
-			croak("Invocant ($invocant) has authority '$authority'.")
-				unless _reasonably_smart_match($authority, $test);
+			croak("Invocant ($invocant) has authority '$authority'")
+				unless reasonably_smart_match($authority, $test);
 		}
 		else
 		{
-			croak("Invocant ($invocant) has no authority defined.")
-				unless _reasonably_smart_match($authority, $test);
+			croak("Invocant ($invocant) has no authority defined")
+				unless reasonably_smart_match($authority, $test);
 		}
 	}
 	
 	return $authority;
 }
 
-sub _reasonably_smart_match
+sub reasonably_smart_match
 {
 	my ($a, $b) = @_;
 	
@@ -56,7 +58,7 @@ sub _reasonably_smart_match
 	}
 	elsif (ref $b eq 'ARRAY')
 	{
-		return grep { _reasonably_smart_match($a, $_) } @$b;
+		return grep { reasonably_smart_match($a, $_) } @$b;
 	}
 	elsif (ref $b eq 'Regexp')
 	{
@@ -115,12 +117,32 @@ operator. (Briefly, you can pass a string for C<eq> comparison, a regular
 expression, a code reference to use as a callback, or an array reference
 that will be grepped.)
 
+=head2 Utility Function
+
+=over
+
+=item C<< UNIVERSAL::AUTHORITY::reasonably_smart_match($a, $b) >>
+
+UNIVERSAL::AUTHORITY exposes its smart match implementation in case
+classes wish to reuse it for their own custom C<AUTHORITY> methods. (There
+are various interesting use cases for custom C<AUTHORITY> methods, just as
+there are for custom C<can> and C<isa> methods.)
+
+The C<< $a >> parameter is assumed to be a scalar.
+
+=back
+
 =head1 BUGS
 
 Please report any bugs to
 L<http://rt.cpan.org/Dist/Display.html?Queue=UNIVERSAL-AUTHORITY>.
 
 =head1 SEE ALSO
+
+L<authority>,
+L<authority::shared>,
+L<http://feather.perl6.nl/syn/S11.html>,
+L<http://www.perlmonks.org/?node_id=694377>.
 
 L<UNIVERSAL>,
 L<UNIVERSAL::which>,
