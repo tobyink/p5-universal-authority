@@ -1,75 +1,12 @@
 package UNIVERSAL::AUTHORITY;
-
-use 5.005;
+use 5.006;
 use strict;
-
 BEGIN {
 	$UNIVERSAL::AUTHORITY::AUTHORITY = 'cpan:TOBYINK';
-	$UNIVERSAL::AUTHORITY::VERSION   = '0.002';
+	$UNIVERSAL::AUTHORITY::VERSION   = '0.003';
 }
-
-use Carp qw[croak];
-use Scalar::Util qw[blessed];
-use UNIVERSAL qw[];
-
-sub UNIVERSAL::AUTHORITY
-{
-	my ($invocant, $test) = @_;
-	$invocant = ref $invocant if blessed($invocant);
-	
-	my $authority = do {
-		no strict 'refs';
-		${"$invocant\::AUTHORITY"};
-		};
-	
-	if (scalar @_ > 1)
-	{
-		if (defined $authority)
-		{
-			croak("Invocant ($invocant) has authority '$authority'")
-				unless reasonably_smart_match($authority, $test);
-		}
-		else
-		{
-			croak("Invocant ($invocant) has no authority defined")
-				unless reasonably_smart_match($authority, $test);
-		}
-	}
-	
-	return $authority;
-}
-
-sub reasonably_smart_match
-{
-	my ($a, $b) = @_;
-	
-	if (!defined $b)
-	{
-		return !defined $a;
-	}
-	elsif (ref $b eq 'CODE')
-	{
-		return $b->($a);
-	}
-	elsif (ref $b eq 'HASH')
-	{
-		return unless defined $a;
-		return exists $b->{$a};
-	}
-	elsif (ref $b eq 'ARRAY')
-	{
-		return grep { reasonably_smart_match($a, $_) } @$b;
-	}
-	elsif (ref $b eq 'Regexp')
-	{
-		return ($a =~ $b);
-	}
-	else
-	{
-		return ($a eq $b);
-	}
-}
-
+use Object::AUTHORITY -package => 'UNIVERSAL';
+*reasonably_smart_match = \&Object::AUTHORITY::reasonably_smart_match;
 1;
 
 __END__
@@ -90,6 +27,8 @@ UNIVERSAL::AUTHORITY - adds an AUTHORITY method to UNIVERSAL
  Moose->AUTHORITY('cpan:STEVAN'); # dies if doesn't match
 
 =head1 DESCRIPTION
+
+B<This module is deprecated:> use L<UNIVERSAL::AUTHORITY::Lexical> instead.
 
 This module adds an C<AUTHORITY> function to the C<UNIVERSAL> package, which
 works along the same lines as the C<VERSION> function. Because it is defined
@@ -117,20 +56,11 @@ operator. (Briefly, you can pass a string for C<eq> comparison, a regular
 expression, a code reference to use as a callback, or an array reference
 that will be grepped.)
 
-=head2 Utility Function
+=begin private
 
-=over
+=head2 reasonably_smart_match($scalar, $test)
 
-=item C<< UNIVERSAL::AUTHORITY::reasonably_smart_match($a, $b) >>
-
-UNIVERSAL::AUTHORITY exposes its smart match implementation in case
-classes wish to reuse it for their own custom C<AUTHORITY> methods. (There
-are various interesting use cases for custom C<AUTHORITY> methods, just as
-there are for custom C<can> and C<isa> methods.)
-
-The C<< $a >> parameter is assumed to be a scalar.
-
-=back
+=end private
 
 =head1 BUGS
 
@@ -139,16 +69,22 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=UNIVERSAL-AUTHORITY>.
 
 =head1 SEE ALSO
 
-L<authority>,
-L<authority::shared>,
-L<http://feather.perl6.nl/syn/S11.html>,
-L<http://www.perlmonks.org/?node_id=694377>.
+=over
 
-L<UNIVERSAL>,
-L<UNIVERSAL::which>,
-L<UNIVERSAL::dump>,
-L<UNIVERSAL::DOES>,
-&c.
+=item * L<Object::AUTHORITY> - an AUTHORITY method for your class
+
+=item * L<authority::shared> - a more sophisticated AUTHORITY method for your class
+
+=item * I<UNIVERSAL::AUTHORITY> (this module) - an AUTHORITY method for every class (deprecated)
+
+=item * L<UNIVERSAL::AUTHORITY::Lexical> - an AUTHORITY method for every class, within a lexical scope
+
+=item * L<authority> - load modules only if they have a particular authority
+
+=back
+
+Background reading: L<http://feather.perl6.nl/syn/S11.html>,
+L<http://www.perlmonks.org/?node_id=694377>.
 
 =head1 AUTHOR
 

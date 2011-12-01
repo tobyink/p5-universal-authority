@@ -27,3 +27,15 @@ dist:v_0-002
 		dcs:item   [ rdfs:label "Expose reaonably_smart_match utility function."@en ] ;
 		dcs:item   [ rdfs:label "Remove trailing full stops from croak messages."@en ]
 		] .
+
+dist:project :release dist:v_0-003 .
+dist:v_0-003
+	a               :Version ;
+	dc:issued       "2011-12-01"^^xsd:date ;
+	:revision       "0.003"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/UNIVERSAL-AUTHORITY-0.003.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-002 ;
+		dcs:item   [ rdfs:label "Deprecate this module."@en ] ;
+		dcs:item   [ rdfs:label "Reimplement using Object::AUTHORITY."@en ]
+		] .
