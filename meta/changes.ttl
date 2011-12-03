@@ -39,3 +39,14 @@ dist:v_0-003
 		dcs:item   [ rdfs:label "Deprecate this module."@en ] ;
 		dcs:item   [ rdfs:label "Reimplement using Object::AUTHORITY."@en ]
 		] .
+
+dist:project :release dist:v_0-004 .
+dist:v_0-004
+	a               :Version ;
+	dc:issued       "2011-12-03"^^xsd:date ;
+	:revision       "0.004"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/UNIVERSAL-AUTHORITY-0.004.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-003 ;
+		dcs:item   [ rdfs:label "Upgrade Module::Package::RDF."@en ; a dcs:Packaging , dcs:Bugfix ]
+		] .
