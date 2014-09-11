@@ -61,3 +61,9 @@ dist:v_0-005
 		dcs:versus dist:v_0-004 ;
 		dcs:item   [ rdfs:label "Note dependency on Object::AUTHORITY."@en ; a dcs:Packaging , dcs:Bugfix ]
 		] .
+`UNIVERSAL-AUTHORITY 0.006 cpan:TOBYINK`
+	issued    2014-09-11;
+	changeset [
+		item "Switch to Dist::Inkt."^^Packaging;
+	].
+
