@@ -3,7 +3,7 @@ use 5.006;
 use strict;
 BEGIN {
 	$UNIVERSAL::AUTHORITY::AUTHORITY = 'cpan:TOBYINK';
-	$UNIVERSAL::AUTHORITY::VERSION   = '0.004';
+	$UNIVERSAL::AUTHORITY::VERSION   = '0.005';
 }
 use Object::AUTHORITY -package => 'UNIVERSAL';
 *reasonably_smart_match = \&Object::AUTHORITY::reasonably_smart_match;
